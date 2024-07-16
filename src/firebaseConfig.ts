@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAIv4sVExRduq-jSYM1DYSbv96wwOAfwpU",
-    authDomain: "ghibli-codex.firebaseapp.com",
-    projectId: "ghibli-codex",
-    storageBucket: "ghibli-codex.appspot.com",
-    messagingSenderId: "394909679536",
-    appId: "1:394909679536:web:9d711d87a4bc68db5da075",
-    measurementId: "G-X1S0TVET33"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
