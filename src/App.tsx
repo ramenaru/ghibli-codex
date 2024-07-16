@@ -6,6 +6,9 @@ import { useAuth } from './context/AuthContext';
 const Films = lazy(() => import('./components/Films'));
 const FilmDetail = lazy(() => import('./components/FilmDetail'));
 const VehicleDetail = lazy(() => import('./components/VehicleDetail'));
+const PersonDetail = lazy(() => import('./components/PersonDetail'));
+const SpeciesDetail = lazy(() => import('./components/SpeciesDetail'));
+const LocationDetail = lazy(() => import('./components/LocationDetail'));
 const Login = lazy(() => import('./components/Login'));
 const Signup = lazy(() => import('./components/Signup'));
 
@@ -35,6 +38,9 @@ const App: React.FC = () => {
             <Route path="/" element={<Films />} />
             <Route path="/film/:id" element={<FilmDetail />} />
             <Route path="/vehicle/:id" element={<VehicleDetail />} />
+            <Route path="/person/:id" element={<PersonDetail />} />
+            <Route path="/species/:id" element={<SpeciesDetail />} />
+            <Route path="/location/:id" element={<LocationDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Routes>
