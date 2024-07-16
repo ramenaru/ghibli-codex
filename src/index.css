@@ -6,12 +6,6 @@ html, body {
   scroll-behavior: smooth;
 }
 
-.header {
-  background-image: url('https://images8.alphacoders.com/135/thumbbig-1354012.webp');
-  background-size: cover;
-  background-position: center;
-}
-
 .card {
   transition: transform 0.2s ease-in-out;
 }
