@@ -1,18 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGhibliFilm } from '../hooks/useGhibliFilm';
-import { useFavorites } from '../hooks/useFavorites';
-import Spinner from './Spinner';
+import LoadingBar from './LoadingBar';
 
 const FilmDetail: React.FC = () => {
   const { id } = useParams();
   const { film, isLoading, isError } = useGhibliFilm(id);
-  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <LoadingBar />;
   if (isError) return <div>Error loading film details.</div>;
-
-  const isFavorite = favorites.includes(id || '');
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -22,12 +18,30 @@ const FilmDetail: React.FC = () => {
       <p className="text-gray-500">Producer: {film.producer}</p>
       <p className="text-gray-500">Release Date: {film.release_date}</p>
       <p className="text-gray-500">Running Time: {film.running_time} minutes</p>
-      <button
-        onClick={() => isFavorite ? removeFavorite(id || '') : addFavorite(id || '')}
-        className="mt-4 p-2 bg-blue-500 text-white rounded"
-      >
-        {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-      </button>
+      <div className="mt-4">
+        <h3 className="text-xl font-bold">Characters</h3>
+        <ul className="list-disc pl-5">
+          {film.people.map((person: any) => (
+            <li key={person.id}>{person.name}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-xl font-bold">Locations</h3>
+        <ul className="list-disc pl-5">
+          {film.locations.map((location: any) => (
+            <li key={location.id}>{location.name}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-xl font-bold">Vehicles</h3>
+        <ul className="list-disc pl-5">
+          {film.vehicles.map((vehicle: any) => (
+            <li key={vehicle.id}>{vehicle.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
@@ -5,23 +6,29 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 export const useGhibliFilm = (id: string | undefined) => {
   const { data, error } = useSWR(id ? `https://ghibliapi.vercel.app/films/${id}` : null, fetcher);
 
-  if (data) {
-    const filmDetails = {
-      ...data,
-      people: data.people.map((url: string) => fetch(url).then(res => res.json())),
-      locations: data.locations.map((url: string) => fetch(url).then(res => res.json())),
-      vehicles: data.vehicles.map((url: string) => fetch(url).then(res => res.json())),
-    };
-    return {
-      film: filmDetails,
-      isLoading: !error && !data,
-      isError: error
-    };
-  }
+  const [filmDetails, setFilmDetails] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (data) {
+      const fetchDetails = async () => {
+        const peoplePromises = data.people.map((url: string) => fetch(url).then(res => res.json()));
+        const locationPromises = data.locations.map((url: string) => fetch(url).then(res => res.json()));
+        const vehiclePromises = data.vehicles.map((url: string) => fetch(url).then(res => res.json()));
+
+        const people = await Promise.all(peoplePromises);
+        const locations = await Promise.all(locationPromises);
+        const vehicles = await Promise.all(vehiclePromises);
+
+        setFilmDetails({ ...data, people, locations, vehicles });
+      };
+
+      fetchDetails();
+    }
+  }, [data]);
 
   return {
-    film: data,
-    isLoading: !error && !data,
+    film: filmDetails,
+    isLoading: !error && !filmDetails,
     isError: error
   };
 };
