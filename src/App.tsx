@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import Films from './components/Films';
-import FilmDetail from './components/FilmDetail';
-import Login from './components/Login';
-import Signup from './components/Signup';
 import LoadingBar from './components/LoadingBar';
 import { useAuth } from './context/AuthContext';
+
+const Films = lazy(() => import('./components/Films'));
+const FilmDetail = lazy(() => import('./components/FilmDetail'));
+const VehicleDetail = lazy(() => import('./components/VehicleDetail'));
+const Login = lazy(() => import('./components/Login'));
+const Signup = lazy(() => import('./components/Signup'));
 
 const App: React.FC = () => {
   const { currentUser, logout } = useAuth();
@@ -13,7 +15,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-header text-white text-center py-4 relative">
+      <header className="bg-blue-500 text-white text-center py-4 relative">
         <h1 className="text-3xl font-bold">Studio Ghibli Codex</h1>
         {currentUser ? (
           <button onClick={logout} className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded">
@@ -28,12 +30,15 @@ const App: React.FC = () => {
         {location.pathname !== "/" && <LoadingBar />}
       </header>
       <main className="p-4">
-        <Routes>
-          <Route path="/" element={<Films />} />
-          <Route path="/film/:id" element={<FilmDetail />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
+        <Suspense fallback={<LoadingBar />}>
+          <Routes>
+            <Route path="/" element={<Films />} />
+            <Route path="/film/:id" element={<FilmDetail />} />
+            <Route path="/vehicle/:id" element={<VehicleDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   );

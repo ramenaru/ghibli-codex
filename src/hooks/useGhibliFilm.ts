@@ -4,7 +4,10 @@ import useSWR from 'swr';
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export const useGhibliFilm = (id: string | undefined) => {
-  const { data, error } = useSWR(id ? `https://ghibliapi.vercel.app/films/${id}` : null, fetcher);
+  const { data, error } = useSWR(id ? `https://ghibliapi.vercel.app/films/${id}` : null, fetcher, {
+    revalidateOnFocus: false,
+    refreshInterval: 60000, 
+  });
 
   const [filmDetails, setFilmDetails] = React.useState<any>(null);
 
