@@ -1,5 +1,15 @@
 # Ghibli Web Codex
 
+<div align="center">
+  <img src="public/header.webp?raw=true" alt="header">
+	
+  A client-sided Ghibli's film information package
+
+  <a href="https://github.com/ramenaru/ghibli-codex/issues">Report a Bug</a>
+  <strong>·</strong>
+  <a href="https://github.com/ramenaru/ghibli-codex/issues">Request a Feature</a>
+</div>
+
 Welcome to the Ghibli Web Codex! This project is a web application that provides information about Studio Ghibli films using the [Studio Ghibli API](https://ghibliapi.vercel.app). The application is built with React, Vite, TypeScript, and Tailwind CSS, and uses SWR for efficient data fetching.
 
 ## Features
@@ -94,8 +104,17 @@ Make sure you have the following installed:
 
 	Contributions are welcome! Please open an issue or submit a pull request for any changes.
     
-6. **License**
 
-	This project is licensed under the MIT License. See the LICENSE file for details.
-    
----
+7. **Contributing**
+
+I really wish for anyone to help with this project, just a simple help with the data is much appreciated!
+
+1. Fork the repository
+2. Create your branch (`git checkout -b patch-1 | bugfix`)
+3. Commit your changes (`git commit -m 'chore: add more features'`)
+4. Push to the branch (`git push origin patch-1 | bugfix`)
+5. Open a [pull request](https://github.com/ramenaru/ghibli-codex/pulls)
+
+## License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
