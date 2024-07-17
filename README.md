@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Ghibli Web Codex</h1>
-  <img src="public/header.webp?raw=true" alt="header">
+  <img src="public/assets/images/header.webp?raw=true" alt="header">
 	
   A client-sided Ghibli's film information package
 
