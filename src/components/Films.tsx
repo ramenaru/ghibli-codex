@@ -42,7 +42,7 @@ const Films: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  if (isLoading) return <LoadingBar />;
+  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError) return <div>Error loading films.</div>;
 
   return (

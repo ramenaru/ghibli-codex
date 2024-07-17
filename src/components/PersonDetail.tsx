@@ -8,7 +8,7 @@ const PersonDetail: React.FC = () => {
   const { people, isLoading, isError } = useGhibliPeople();
   const person = people?.find((p: any) => p.id === id);
 
-  if (isLoading) return <LoadingBar />;
+  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError || !person) return <div>Error loading person details.</div>;
 
   return (

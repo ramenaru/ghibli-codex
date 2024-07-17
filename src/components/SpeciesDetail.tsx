@@ -8,7 +8,7 @@ const SpeciesDetail: React.FC = () => {
   const { species, isLoading, isError } = useGhibliSpecies();
   const specie = species?.find((s: any) => s.id === id);
 
-  if (isLoading) return <LoadingBar />;
+  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError || !specie) return <div>Error loading species details.</div>;
 
   return (

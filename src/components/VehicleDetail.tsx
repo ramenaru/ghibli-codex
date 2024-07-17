@@ -7,7 +7,7 @@ const VehicleDetail: React.FC = () => {
   const { id } = useParams();
   const { vehicle, isLoading, isError } = useVehicleDetail(id);
 
-  if (isLoading) return <LoadingBar />;
+  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError || !vehicle) return <div>Error loading vehicle details.</div>;
 
   return (

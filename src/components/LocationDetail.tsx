@@ -8,7 +8,7 @@ const LocationDetail: React.FC = () => {
   const { locations, isLoading, isError } = useGhibliLocations();
   const location = locations?.find((l: any) => l.id === id);
 
-  if (isLoading) return <LoadingBar />;
+  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError || !location) return <div>Error loading location details.</div>;
 
   return (
