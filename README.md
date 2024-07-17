@@ -38,70 +38,70 @@ Make sure you have the following installed:
 
 1. **Clone the repository:**
 
-   ```sh
-   git clone https://github.com/yourusername/ghibli-web-codex.git
-   cd ghibli-web-codex
-   ```
+```sh
+git clone https://github.com/yourusername/ghibli-web-codex.git
+cd ghibli-web-codex
+```
    
 2. **Install dependencies:**
 
-   ```sh
-   npm install
-   yarn install
-   ```
+```sh
+npm install
+yarn install
+```
    
 3. **Running the Development Server:**
 
-	To start the development server, run:
+To start the development server, run:
     
-   ```sh
-   npm run dev
-   yarn dev
-   ```
-   Open `http://localhost:3000` to view it in your browser. The page will reload when you make changes.
+```sh
+npm run dev
+yarn dev
+```
+Open `http://localhost:3000` to view it in your browser. The page will reload when you make changes.
 
 4. **Building for Production:**
 
-	To create an optimized production build, run:
+To create an optimized production build, run:
     
-   ```sh
-   npm run build
-   yarn build
-   ```
+```sh
+npm run build
+yarn build
+```
  
 5. **API Integration**
 
-	This project uses the Studio Ghibli API to fetch data about Studio Ghibli films.
+This project uses the Studio Ghibli API to fetch data about Studio Ghibli films.
     
 6. **Example Fetch Using SWR:**
 
-	Here is an example of how to fetch data using SWR:
+Here is an example of how to fetch data using SWR:
    
-     ````js
-    import useSWR from 'swr';
+````js
+import useSWR from 'swr';
 
-    const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-    const { data, error } = useSWR('https://ghibliapi.vercel.app/films', fetcher);
+const { data, error } = useSWR('https://ghibliapi.vercel.app/films', fetcher);
 
-    if (error) return <div>Failed to load</div>;
-    if (!data) return <div>Loading...</div>;
+if (error) return <div>Failed to load</div>;
+if (!data) return <div>Loading...</div>;
 
-    return (
-      <div>
-        {data.map((film: any) => (
-          <div key={film.id}>
-            <h2>{film.title}</h2>
-            <p>{film.description}</p>
-          </div>
-        ))}
-      </div>
-    );
-    ````
+  return (
+    <div>
+      {data.map((film: any) => (
+        <div key={film.id}>
+          <h2>{film.title}</h2>
+          <p>{film.description}</p>
+        </div>
+      ))}
+    </div>
+  );
+````
 
 6. **Contributing**
 
-	Contributions are welcome! Please open an issue or submit a pull request for any changes.
+Contributions are welcome! Please open an issue or submit a pull request for any changes.
     
 
 7. **Contributing**
