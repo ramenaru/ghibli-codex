@@ -1,6 +1,5 @@
-<h1 style="text-align: center;">Ghibli Web Codex</h1>
-
 <div align="center">
+  <h1>Ghibli Web Codex</h1>
   <img src="public/header.webp?raw=true" alt="header">
 	
   A client-sided Ghibli's film information package
