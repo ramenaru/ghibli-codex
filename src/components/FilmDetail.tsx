@@ -6,6 +6,7 @@ import { useGhibliSpecies } from '../hooks/useGhibliSpecies';
 import { useGhibliLocations } from '../hooks/useGhibliLocations';
 import { useGhibliVehicles } from '../hooks/useGhibliVehicles';
 import LoadingBar from './LoadingBar';
+import { useUser } from '../context/UserContext';
 
 const FilmDetail: React.FC = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const FilmDetail: React.FC = () => {
   const { species, isLoading: isSpeciesLoading } = useGhibliSpecies();
   const { locations, isLoading: isLocationsLoading } = useGhibliLocations();
   const { vehicles, isLoading: isVehiclesLoading } = useGhibliVehicles();
+  const userContext = useUser();
 
   const isLoading = isFilmLoading || isPeopleLoading || isSpeciesLoading || isLocationsLoading || isVehiclesLoading;
 
@@ -29,6 +31,8 @@ const FilmDetail: React.FC = () => {
   const relatedLocations = getRelatedData(film.locations, locations);
   const relatedVehicles = getRelatedData(film.vehicles, vehicles);
 
+  const isFavorite = userContext?.favorites.some(fav => fav.filmId === id);
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <LoadingBar isLoading={false} />
@@ -39,6 +43,14 @@ const FilmDetail: React.FC = () => {
       <p className="text-gray-500 mb-2"><strong>Producer:</strong> {film.producer}</p>
       <p className="text-gray-500 mb-2"><strong>Release Date:</strong> {film.release_date}</p>
       <p className="text-gray-500 mb-6"><strong>Running Time:</strong> {film.running_time} minutes</p>
+      {userContext && userContext.user && (
+        <button
+          onClick={() => isFavorite ? userContext.removeFavorite(userContext.favorites.find(fav => fav.filmId === id)?.id || '') : userContext.addFavorite(id!)}
+          className={`p-2 ${isFavorite ? 'bg-red-500' : 'bg-green-500'} text-white rounded mb-4`}
+        >
+          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+        </button>
+      )}
       <div className="mb-6">
         <h3 className="text-2xl font-bold mb-2">Characters</h3>
         <ul className="list-disc pl-5">

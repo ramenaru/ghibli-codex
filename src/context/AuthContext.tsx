@@ -25,7 +25,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return unsubscribe;
   }, []);
 
-  const logout = () => signOut(auth);
+  const logout = () => {
+    signOut(auth);
+  };
 
   return (
     <AuthContext.Provider value={{ currentUser, logout }}>
