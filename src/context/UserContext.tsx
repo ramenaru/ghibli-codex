@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { auth, db } from '../firebaseConfig';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { collection, getDocs, query, where, addDoc, deleteDoc, doc, DocumentData, DocumentReference } from 'firebase/firestore';
+import { collection, getDocs, query, where, addDoc, deleteDoc, doc,} from 'firebase/firestore';
+import useSWR, { mutate } from 'swr';
 
 interface Favorite {
   id: string;
@@ -22,58 +23,49 @@ interface UserProviderProps {
   children: ReactNode;
 }
 
+const fetchFavorites = async (userId: string) => {
+  const q = query(collection(db, 'favorites'), where('userId', '==', userId));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Favorite));
+};
+
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser: User | null) => {
-      if (currentUser) {
-        setUser(currentUser);
-        try {
-          const q = query(collection(db, 'favorites'), where('userId', '==', currentUser.uid));
-          const querySnapshot = await getDocs(q);
-          const favs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Favorite));
-          setFavorites(favs);
-        } catch (error) {
-          console.error('Error fetching favorites:', error);
-        }
-      } else {
-        setUser(null);
-        setFavorites([]);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser: User | null) => {
+      setUser(currentUser);
     });
 
     return () => unsubscribe();
   }, []);
 
+  const { data: favorites } = useSWR(
+    user ? `/api/favorites/${user.uid}` : null,
+    () => user ? fetchFavorites(user.uid) : []
+  );
+
   const addFavorite = async (filmId: string) => {
     if (user) {
-      try {
-        const newFav: DocumentReference<DocumentData> = await addDoc(collection(db, 'favorites'), {
-          userId: user.uid,
-          filmId,
-        });
-        setFavorites([...favorites, { id: newFav.id, filmId, userId: user.uid }]);
-      } catch (error) {
-        console.error('Error adding favorite:', error);
-      }
+      await addDoc(collection(db, 'favorites'), {
+        userId: user.uid,
+        filmId,
+      });
+      mutate(`/api/favorites/${user.uid}`);
     } else {
       console.error('No user authenticated, cannot add favorite');
     }
   };
 
   const removeFavorite = async (favId: string) => {
-    try {
-      await deleteDoc(doc(db, 'favorites', favId));
-      setFavorites(favorites.filter(fav => fav.id !== favId));
-    } catch (error) {
-      console.error('Error removing favorite:', error);
+    await deleteDoc(doc(db, 'favorites', favId));
+    if (user) {
+      mutate(`/api/favorites/${user.uid}`);
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, favorites, addFavorite, removeFavorite }}>
+    <UserContext.Provider value={{ user, favorites: favorites || [], addFavorite, removeFavorite }}>
       {children}
     </UserContext.Provider>
   );

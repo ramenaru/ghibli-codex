@@ -4,18 +4,18 @@ import { useVehicleDetail } from '../hooks/useVehicleDetail';
 import LoadingBar from './LoadingBar';
 
 const VehicleDetail: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { vehicle, isLoading, isError } = useVehicleDetail(id);
 
   if (isLoading) return <LoadingBar isLoading={true} />;
-  if (isError || !vehicle) return <div>Error loading vehicle details.</div>;
+  if (isError || !vehicle) return <div className="text-center text-red-500">Error loading vehicle details.</div>;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
-      <h2 className="text-2xl font-bold">{vehicle.name}</h2>
-      <p className="text-gray-700">{vehicle.description}</p>
-      <p className="text-gray-500">Vehicle Class: {vehicle.vehicle_class}</p>
-      <p className="text-gray-500">Length: {vehicle.length}</p>
+      <h2 className="text-2xl font-bold mb-4">{vehicle.name}</h2>
+      <p className="text-gray-700 mb-2">{vehicle.description}</p>
+      <p className="text-gray-500 mb-2"><strong>Vehicle Class:</strong> {vehicle.vehicle_class}</p>
+      <p className="text-gray-500 mb-4"><strong>Length:</strong> {vehicle.length}</p>
       {vehicle.pilot && (
         <div className="mt-4">
           <h3 className="text-xl font-bold">Pilot</h3>

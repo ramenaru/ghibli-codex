@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useRef } from 'react';
+import React, { Suspense, lazy, useState, useRef, useCallback } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import LoadingBar from './components/LoadingBar';
 import { useAuth } from './context/AuthContext';
@@ -21,21 +21,21 @@ const App: React.FC = () => {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const toggleMusic = () => {
+  const toggleMusic = useCallback(() => {
     if (audioRef.current) {
       if (isMusicPlaying) {
         audioRef.current.pause();
       } else {
         audioRef.current.play();
       }
-      setIsMusicPlaying(!isMusicPlaying);
+      setIsMusicPlaying(prevState => !prevState);
     }
-  };
+  }, [isMusicPlaying]);
 
   return (
     <UserProvider>
       <div className="min-h-screen bg-gray-100">
-        <header className="bg-blue-500 text-white text-center py-4 relative">
+        <header className="bg-header text-white text-center py-4 relative">
           <h1 className="text-3xl font-bold">Studio Ghibli Codex</h1>
           <audio ref={audioRef} loop>
             <source src="/assets/audio/audio.mp3" type="audio/mpeg" />

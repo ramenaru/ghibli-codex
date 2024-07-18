@@ -7,21 +7,27 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch(query);
   };
 
   return (
-    <form onSubmit={handleSearch} className="mb-4">
+    <form onSubmit={handleSearch} className="mb-4 flex flex-col items-center sm:flex-row sm:justify-center">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="p-2 border rounded w-full"
+        className="p-2 border rounded w-full sm:w-64"
         placeholder="Search films..."
+        aria-label="Search films"
       />
-      <button type="submit" className="mt-2 p-2 bg-blue-500 text-white rounded">Search</button>
+      <button
+        type="submit"
+        className="mt-2 sm:mt-0 sm:ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+      >
+        Search
+      </button>
     </form>
   );
 };

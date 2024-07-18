@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,7 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
@@ -32,7 +33,7 @@ const Login: React.FC = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
@@ -43,14 +44,14 @@ const Login: React.FC = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Log In</button>
+          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">Log In</button>
         </form>
-        <p className="mt-4">
-          Don't have an account? <a href="/signup" className="text-blue-500">Sign Up</a>
+        <p className="mt-4 text-center">
+          Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,8 +9,9 @@ const Signup: React.FC = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       navigate('/');
@@ -32,8 +33,9 @@ const Signup: React.FC = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
@@ -43,14 +45,15 @@ const Signup: React.FC = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
+              aria-required="true"
             />
           </div>
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Sign Up</button>
+          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">Sign Up</button>
         </form>
-        <p className="mt-4">
-          Already have an account? <a href="/login" className="text-blue-500">Log In</a>
+        <p className="mt-4 text-center">
+          Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log In</Link>
         </p>
       </div>
     </div>

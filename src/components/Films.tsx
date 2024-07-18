@@ -49,9 +49,9 @@ const Films: React.FC = () => {
     <div>
       <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center mb-4">
-        <button onClick={() => setSortOrder('default')} className="p-2 bg-blue-500 text-white rounded m-1">Default</button>
-        <button onClick={() => setSortOrder('mostPopular')} className="p-2 bg-blue-500 text-white rounded m-1">Most Popular</button>
-        <button onClick={() => setSortOrder('releaseDate')} className="p-2 bg-blue-500 text-white rounded m-1">Release Date</button>
+        <button onClick={() => setSortOrder('default')} className={`p-2 ${sortOrder === 'default' ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded m-1`}>Default</button>
+        <button onClick={() => setSortOrder('mostPopular')} className={`p-2 ${sortOrder === 'mostPopular' ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded m-1`}>Most Popular</button>
+        <button onClick={() => setSortOrder('releaseDate')} className={`p-2 ${sortOrder === 'releaseDate' ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded m-1`}>Release Date</button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentFilms.map((film: any) => (

@@ -1,6 +1,12 @@
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return response.json();
+};
 
 export const useGhibliSpecies = () => {
   const { data, error } = useSWR('https://ghibliapi.vercel.app/species', fetcher, {
@@ -11,6 +17,6 @@ export const useGhibliSpecies = () => {
   return {
     species: data,
     isLoading: !error && !data,
-    isError: error
+    isError: !!error,
   };
 };
