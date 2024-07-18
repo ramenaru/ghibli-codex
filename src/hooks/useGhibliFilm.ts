@@ -1,7 +1,13 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return response.json();
+};
 
 export const useGhibliFilm = (id: string | undefined) => {
   const { data, error } = useSWR(id ? `https://ghibliapi.vercel.app/films/${id}` : null, fetcher, {
@@ -9,20 +15,26 @@ export const useGhibliFilm = (id: string | undefined) => {
     refreshInterval: 60000, 
   });
 
-  const [filmDetails, setFilmDetails] = React.useState<any>(null);
+  const [filmDetails, setFilmDetails] = useState<any>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const fetchDetails = async () => {
-        const peoplePromises = data.people.map((url: string) => fetch(url).then(res => res.json()));
-        const locationPromises = data.locations.map((url: string) => fetch(url).then(res => res.json()));
-        const vehiclePromises = data.vehicles.map((url: string) => fetch(url).then(res => res.json()));
+        try {
+          const peoplePromises = data.people.map((url: string) => fetcher(url));
+          const locationPromises = data.locations.map((url: string) => fetcher(url));
+          const vehiclePromises = data.vehicles.map((url: string) => fetcher(url));
 
-        const people = await Promise.all(peoplePromises);
-        const locations = await Promise.all(locationPromises);
-        const vehicles = await Promise.all(vehiclePromises);
+          const [people, locations, vehicles] = await Promise.all([
+            Promise.all(peoplePromises),
+            Promise.all(locationPromises),
+            Promise.all(vehiclePromises),
+          ]);
 
-        setFilmDetails({ ...data, people, locations, vehicles });
+          setFilmDetails({ ...data, people, locations, vehicles });
+        } catch (error) {
+          console.error('Error fetching related data:', error);
+        }
       };
 
       fetchDetails();
@@ -32,6 +44,6 @@ export const useGhibliFilm = (id: string | undefined) => {
   return {
     film: filmDetails,
     isLoading: !error && !filmDetails,
-    isError: error
+    isError: error,
   };
 };
