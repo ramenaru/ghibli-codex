@@ -1,11 +1,21 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useVehicleDetail } from '../hooks/useVehicleDetail';
+import { useGhibliVehicles } from '../hooks/useGhibliVehicles';
 import LoadingBar from './LoadingBar';
+
+interface Vehicle {
+  id: string;
+  name: string;
+  description: string;
+  vehicle_class: string;
+  length: string;
+  pilot: string;
+}
 
 const VehicleDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { vehicle, isLoading, isError } = useVehicleDetail(id);
+  const { vehicles, isLoading, isError } = useGhibliVehicles();
+  const vehicle = vehicles?.find((v: Vehicle) => v.id === id);
 
   if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError || !vehicle) return <div className="text-center text-red-500">Error loading vehicle details.</div>;
