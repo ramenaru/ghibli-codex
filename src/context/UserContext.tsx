@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { auth, db } from '../firebaseConfig';
+import { auth, db } from '../lib/firebaseConfig';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs, query, where, addDoc, deleteDoc, doc,} from 'firebase/firestore';
 import useSWR, { mutate } from 'swr';

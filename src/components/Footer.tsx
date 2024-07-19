@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-blue-500 text-white py-4">
+    <footer className="bg-blue-500 text-white py-4 mt-auto">
       <div className="container mx-auto px-4 flex flex-col items-center sm:flex-row sm:justify-between">
         <div className="mb-4 sm:mb-0">
           <h2 className="text-lg font-bold">🍃 Studio Ghibli Codex</h2>

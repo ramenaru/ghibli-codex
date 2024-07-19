@@ -1,17 +1,17 @@
 import React, { Suspense, lazy, useState, useRef, useCallback } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import LoadingBar from './components/LoadingBar';
+import LoadingBar from './components/Loading/LoadingBar';
 import { useAuth } from './context/AuthContext';
 import { MdMusicNote, MdMusicOff } from 'react-icons/md';
 import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
 
-const Films = lazy(() => import('./components/Films'));
-const FilmDetail = lazy(() => import('./components/FilmDetail'));
-const VehicleDetail = lazy(() => import('./components/VehicleDetail'));
-const PersonDetail = lazy(() => import('./components/PersonDetail'));
-const SpeciesDetail = lazy(() => import('./components/SpeciesDetail'));
-const LocationDetail = lazy(() => import('./components/LocationDetail'));
+const Films = lazy(() => import('./components/Film/Films'));
+const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
+const VehicleDetail = lazy(() => import('./components/Detail/VehicleDetail'));
+const PersonDetail = lazy(() => import('./components/Detail/PersonDetail'));
+const SpeciesDetail = lazy(() => import('./components/Detail/SpeciesDetail'));
+const LocationDetail = lazy(() => import('./components/Detail/LocationDetail'));
 const Login = lazy(() => import('./components/Login'));
 const Signup = lazy(() => import('./components/Signup'));
 const Profile = lazy(() => import('./components/Profile'));
