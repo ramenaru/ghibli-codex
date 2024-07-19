@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../lib/firebaseConfig';
 import { useNavigate, Link } from 'react-router-dom';
+import { FaGoogle, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,41 +16,60 @@ const Login: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
-    } catch (error) {
-      setError('Failed to log in. Please check your credentials.');
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/');
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-4">Log In</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Log In</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+            <div className="flex items-center border rounded p-2">
+              <FaEnvelope className="text-gray-500 mr-2" />
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-2 focus:outline-none"
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+            <div className="flex items-center border rounded p-2">
+              <FaLock className="text-gray-500 mr-2" />
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 focus:outline-none"
+                required
+              />
+            </div>
           </div>
           <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">Log In</button>
         </form>
+        <button onClick={handleGoogleLogin} className="w-full p-2 mt-4 bg-red-500 text-white rounded flex items-center justify-center hover:bg-red-600 transition duration-200">
+          <FaGoogle className="mr-2" /> Log In with Google
+        </button>
         <p className="mt-4 text-center">
           Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
         </p>
