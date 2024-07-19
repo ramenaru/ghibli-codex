@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState, useRef, useCallback } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import LoadingBar from './components/Loading/LoadingBar';
 import { useAuth } from './context/AuthContext';
 import { MdMusicNote, MdMusicOff } from 'react-icons/md';
@@ -18,7 +18,6 @@ const Profile = lazy(() => import('./components/Profile'));
 
 const App: React.FC = () => {
   const { currentUser, logout } = useAuth();
-  const location = useLocation();
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -65,11 +64,6 @@ const App: React.FC = () => {
               </div>
             )}
           </div>
-          {location.pathname !== "/" && (
-            <div className="w-full sm:absolute sm:bottom-0 sm:left-0">
-              <LoadingBar isLoading={true} />
-            </div>
-          )}
         </header>
         <main className="p-4">
           <Suspense fallback={<LoadingBar isLoading={true} />}>

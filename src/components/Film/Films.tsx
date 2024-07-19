@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useGhibliFilms } from '../../hooks/useFilmDetail';
 import SearchBar from '../SearchBar';
-import LoadingBar from '../Loading/LoadingBar';
+import ShimmerCard from '../Shimmer/ShimmerCard';
 
 const Films: React.FC = () => {
   const { films, isLoading, isError } = useGhibliFilms();
@@ -42,7 +42,6 @@ const Films: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  if (isLoading) return <LoadingBar isLoading={true} />;
   if (isError) return <div>Error loading films.</div>;
 
   return (
@@ -54,15 +53,19 @@ const Films: React.FC = () => {
         <button onClick={() => setSortOrder('releaseDate')} className={`p-2 ${sortOrder === 'releaseDate' ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded m-1`}>Release Date</button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {currentFilms.map((film: any) => (
-          <Link to={`/film/${film.id}`} key={film.id} className="card bg-white rounded-lg shadow-md p-4 hover:bg-gray-200 transition">
-            <img src={film.image} alt={film.title} className="w-full h-64 object-cover mb-4 rounded-lg" />
-            <h2 className="text-xl font-bold">{film.title}</h2>
-            <p className="text-gray-700">{film.description}</p>
-            <p className="text-gray-500">Director: {film.director}</p>
-            <p className="text-gray-500">Release Date: {film.release_date}</p>
-          </Link>
-        ))}
+        {isLoading ? (
+          Array.from({ length: 5 }).map((_, index) => <ShimmerCard key={index} />)
+        ) : (
+          currentFilms.map((film: any) => (
+            <Link to={`/film/${film.id}`} key={film.id} className="card bg-white rounded-lg shadow-md p-4 hover:bg-gray-200 transition">
+              <img src={film.image} alt={film.title} className="w-full h-64 object-cover mb-4 rounded-lg" />
+              <h2 className="text-xl font-bold">{film.title}</h2>
+              <p className="text-gray-700">{film.description}</p>
+              <p className="text-gray-500">Director: {film.director}</p>
+              <p className="text-gray-500">Release Date: {film.release_date}</p>
+            </Link>
+          ))
+        )}
       </div>
       <div className="flex justify-center mt-4">
         {Array.from({ length: Math.ceil(filteredFilms.length / filmsPerPage) }, (_, index) => (
@@ -77,6 +80,6 @@ const Films: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Films;

@@ -5,8 +5,8 @@ import { useGhibliPeople } from '../../hooks/useCharacters';
 import { useGhibliSpecies } from '../../hooks/useSpecies';
 import { useGhibliLocations } from '../../hooks/useLocation';
 import { useGhibliVehicles } from '../../hooks/useVehicle';
-import LoadingBar from '../Loading/LoadingBar';
 import { useUser } from '../../context/UserContext';
+import ShimmerDetailCard from '../Shimmer/ShimmerDetailCard';
 
 const FilmDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,7 +32,11 @@ const FilmDetail: React.FC = () => {
   const isFavorite = userContext?.favorites.some(fav => fav.filmId === id);
 
   if (isLoading) {
-    return <LoadingBar isLoading={true} />;
+    return (
+      <div className="p-6">
+        <ShimmerDetailCard />
+      </div>
+    );
   }
 
   if (isError || !film) {
