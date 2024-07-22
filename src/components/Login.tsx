@@ -17,7 +17,17 @@ const Login: React.FC = () => {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch (error: any) {
-      setError(error.message);
+      switch (error.code) {
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+          setError('Your username or password is invalid.');
+          break;
+        case 'auth/invalid-email':
+          setError('Invalid email format.');
+          break;
+        default:
+          setError('An unexpected error occurred. Please try again later.');
+      }
     }
   };
 
@@ -27,7 +37,7 @@ const Login: React.FC = () => {
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch (error: any) {
-      setError(error.message);
+      setError('An unexpected error occurred. Please try again later.');
     }
   };
 
