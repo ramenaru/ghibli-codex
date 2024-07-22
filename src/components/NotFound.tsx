@@ -14,7 +14,7 @@ const NotFound: React.FC = () => {
       <p className="text-2xl text-gray-600 mb-8">Oops! Page not found.</p>
       <button 
         onClick={goHome} 
-        className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+        className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-300"
       >
         Go Home
       </button>
