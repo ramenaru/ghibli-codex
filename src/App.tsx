@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useRef, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useRef, useCallback, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import LoadingBar from './components/Loading/LoadingBar';
 import { useAuth } from './context/AuthContext';
@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ShimmerHeader from './components/Shimmer/ShimmerHeader';
 import ShimmerFooter from './components/Shimmer/ShimmerFooter';
 import ShimmerBanner from './components/Shimmer/ShimmerBanner';
+import quotes from './components/Quotes';
 
 const Films = lazy(() => import('./components/Film/Films'));
 const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
@@ -20,10 +21,25 @@ const Signup = lazy(() => import('./components/Signup'));
 const Profile = lazy(() => import('./components/Profile'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
+const getRandomQuote = () => {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  return quotes[randomIndex];
+};
+
 const App: React.FC = () => {
   const { currentUser, logout } = useAuth();
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const [quote, setQuote] = useState(getRandomQuote());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuote(getRandomQuote());
+    }, 10000);
+
+    return () => clearInterval(interval); 
+  }, []);
 
   const toggleMusic = useCallback(() => {
     if (audioRef.current) {
@@ -110,10 +126,10 @@ const App: React.FC = () => {
             <img src="/assets/images/header.webp" className="w-full h-64 object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="max-w-4xl mx-auto text-center">
-                <blockquote className="text-xl md:text-2xl italic font-semibold text-gray-100">
-                  <p>“If I lose my magic, that means I've lost absolutely everything.”</p>
+                <blockquote className="text-lg md:text-2xl italic font-semibold text-gray-100">
+                  <p>{quote.quote}</p>
                 </blockquote>
-                <figcaption className="mt-4 text-gray-300">— Kiki’s Delivery Service, 1989</figcaption>
+                <figcaption className="mt-4 text-gray-300">— {quote.source}</figcaption>
               </div>
             </div>
           </section>
