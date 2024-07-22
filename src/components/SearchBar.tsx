@@ -52,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="p-3 pl-10 border border-gray-300 rounded-full text-sm w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          className="p-3 pl-10 border border-gray-300 rounded-xl text-sm w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
           placeholder="Search films, characters, etc..."
           aria-label="Search"
         />
@@ -64,11 +64,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         </button>
       </form>
       {showSuggestions && suggestions.length > 0 && (
-        <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg max-h-60 overflow-auto">
+        <ul className="absolute z-10 w-full bg-white border border-gray-300 text-gray-800 rounded-md mt-2 shadow-lg max-h-60 overflow-auto">
           {suggestions.map((suggestion, index) => (
             <li
               key={index}
-              className="p-2 hover:bg-gray-200 cursor-pointer flex items-center"
+              className="p-2 text-sm hover:bg-gray-200 text-gray-800 cursor-pointer flex items-center"
               onClick={() => handleSuggestionClick(suggestion.title || suggestion.name)}
             >
               {suggestion.icon}
@@ -79,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         </ul>
       )}
       {query.length > 2 && !films && (
-        <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg p-2 text-center">
+        <div className="absolute z-10 w-full bg-white border text-gray-800 border-gray-300 rounded-md mt-1 shadow-lg p-2 text-center">
           Loading...
         </div>
       )}

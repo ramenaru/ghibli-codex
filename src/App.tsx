@@ -7,7 +7,6 @@ import { FiGithub } from 'react-icons/fi';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
-import NotFound from './components/NotFound';
 
 const Films = lazy(() => import('./components/Film/Films'));
 const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
@@ -18,6 +17,8 @@ const LocationDetail = lazy(() => import('./components/Detail/LocationDetail'));
 const Login = lazy(() => import('./components/Login'));
 const Signup = lazy(() => import('./components/Signup'));
 const Profile = lazy(() => import('./components/Profile'));
+const NotFound = lazy(() => import('./components/NotFound'));
+
 
 const App: React.FC = () => {
   const { currentUser, logout } = useAuth();
@@ -53,8 +54,8 @@ const App: React.FC = () => {
               </Link>
               <nav className="hidden px-4 md:flex space-x-4">
                 <Link to="/" className="text-md hover:text-gray-200 transition-colors duration-300">Home</Link>
-                <Link to="/about" className="text-md hover:text-gray-200 transition-colors duration-300">About</Link>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-md hover:text-gray-200 transition-colors duration-300 flex items-center">
+                <Link to="https://ramenaru.me" className="text-md hover:text-gray-200 transition-colors duration-300">About</Link>
+                <a href="https://github.com/ramenaru/ghibli-codex" target="_blank" rel="noopener noreferrer" className="text-md hover:text-gray-200 transition-colors duration-300 flex items-center">
                   <FiGithub className="mr-1" /> GitHub
                 </a>
               </nav>
