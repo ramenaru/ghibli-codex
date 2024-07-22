@@ -58,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         />
         <button
           type="submit"
-          className="absolute right-2 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition duration-200"
+          className="absolute right-2 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200"
         >
           <FaSearch />
         </button>

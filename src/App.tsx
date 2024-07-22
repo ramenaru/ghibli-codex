@@ -7,6 +7,9 @@ import { FiGithub } from 'react-icons/fi';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
+import ShimmerHeader from './components/Shimmer/ShimmerHeader';
+import ShimmerFooter from './components/Shimmer/ShimmerFooter';
+import ShimmerBanner from './components/Shimmer/ShimmerBanner';
 
 const Films = lazy(() => import('./components/Film/Films'));
 const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
@@ -18,7 +21,6 @@ const Login = lazy(() => import('./components/Login'));
 const Signup = lazy(() => import('./components/Signup'));
 const Profile = lazy(() => import('./components/Profile'));
 const NotFound = lazy(() => import('./components/NotFound'));
-
 
 const App: React.FC = () => {
   const { currentUser, logout } = useAuth();
@@ -45,64 +47,79 @@ const App: React.FC = () => {
   return (
     <UserProvider>
       <div className="min-h-screen bg-gray-100">
-        <header className="bg-blue-500 text-white shadow-lg w-full z-10">
-          <div className="container mx-auto flex justify-between items-center py-3 px-4">
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="flex flex-row items-center space-x-2 text-sm">
-                <img src="/assets/images/logo/icons144x144.png" alt="logo" className="h-10 w-10" />
-                <span className="text-xl font-bold hidden sm:block md:block">Ghibli Codex</span>
-              </Link>
-              <nav className="hidden px-4 md:flex space-x-4">
-                <Link to="/" className="text-md hover:text-gray-200 transition-colors duration-300">Home</Link>
-                <Link to="https://ramenaru.me" className="text-md hover:text-gray-200 transition-colors duration-300">About</Link>
-                <a href="https://github.com/ramenaru/ghibli-codex" target="_blank" rel="noopener noreferrer" className="text-md hover:text-gray-200 transition-colors duration-300 flex items-center">
-                  <FiGithub className="mr-1" /> GitHub
-                </a>
-              </nav>
+        <Suspense fallback={<ShimmerHeader />}>
+          <header className="bg-blue-500 text-white shadow-lg w-full z-10">
+            <div className="container mx-auto flex justify-between items-center py-3 px-4">
+              <div className="flex items-center space-x-4">
+                <Link to="/" className="flex flex-row items-center space-x-2 text-sm">
+                  <img src="/assets/images/logo/icons144x144.png" alt="logo" className="h-10 w-10" />
+                  <span className="text-xl font-bold hidden sm:block md:block">Ghibli Codex</span>
+                </Link>
+                <nav className="hidden px-4 md:flex space-x-4">
+                  <Link to="/" className="text-md hover:text-gray-200 transition-colors duration-300">Home</Link>
+                  <Link to="https://ramenaru.me" className="text-md hover:text-gray-200 transition-colors duration-300">About</Link>
+                  <a href="https://github.com/ramenaru/ghibli-codex" target="_blank" rel="noopener noreferrer" className="text-md hover:text-gray-200 transition-colors duration-300 flex items-center">
+                    <FiGithub className="mr-1" /> GitHub
+                  </a>
+                </nav>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={toggleMusic}
+                  className="p-2 bg-blue-400 text-white rounded-full hover:bg-blue-600 focus:outline-none transition-colors duration-300"
+                >
+                  {isMusicPlaying ? <MdMusicNote size={20} /> : <MdMusicOff size={20} />}
+                </button>
+                {currentUser ? (
+                  <>
+                    <button onClick={logout} className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300">
+                      Logout
+                    </button>
+                    <Link to="/profile" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
+                      Profile
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">Login</Link>
+                    <Link to="/signup" className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-300">Sign Up</Link>
+                  </>
+                )}
+                <button onClick={toggleMobileMenu} className="md:hidden text-white focus:outline-none">
+                  {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                </button>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={toggleMusic}
-                className="p-2 bg-blue-400 text-white rounded-full hover:bg-blue-600 focus:outline-none transition-colors duration-300"
-              >
-                {isMusicPlaying ? <MdMusicNote size={20} /> : <MdMusicOff size={20} />}
-              </button>
-              {currentUser ? (
-                <>
-                  <button onClick={logout} className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300">
-                    Logout
-                  </button>
-                  <Link to="/profile" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
-                    Profile
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">Login</Link>
-                  <Link to="/signup" className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-300">Sign Up</Link>
-                </>
-              )}
-              <button onClick={toggleMobileMenu} className="md:hidden text-white focus:outline-none">
-                {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-              </button>
+            {isMobileMenuOpen && (
+              <div className="md:hidden bg-blue-500">
+                <nav className="flex flex-col items-center space-y-2 py-2">
+                  <Link to="/" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>Home</Link>
+                  <Link to="/about" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>About</Link>
+                  <a href="https://github.com/ramenaru" target="_blank" rel="noopener noreferrer" className="text-md text-white hover:text-gray-200 transition-colors duration-300 flex items-center" onClick={toggleMobileMenu}>
+                    <FiGithub className="mr-1" /> GitHub
+                  </a>
+                </nav>
+              </div>
+            )}
+            <audio ref={audioRef} loop className="hidden">
+              <source src="/assets/audio/audio.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </header>
+        </Suspense>
+        <Suspense fallback={<ShimmerBanner />}>
+          <section className="relative">
+            <img src="/assets/images/header.webp" alt="Ghibli Banner" className="w-full h-64 object-cover" />
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="max-w-4xl mx-auto text-center">
+                <blockquote className="text-2xl italic font-semibold text-gray-100">
+                  <p>“If I lose my magic, that means I've lost absolutely everything.”</p>
+                </blockquote>
+                <figcaption className="mt-4 text-gray-300">— Kiki’s Delivery Service, 1989</figcaption>
+              </div>
             </div>
-          </div>
-          {isMobileMenuOpen && (
-            <div className="md:hidden bg-blue-500">
-              <nav className="flex flex-col items-center space-y-2 py-2">
-                <Link to="/" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>Home</Link>
-                <Link to="/about" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>About</Link>
-                <a href="https://github.com/ramenaru" target="_blank" rel="noopener noreferrer" className="text-md text-white hover:text-gray-200 transition-colors duration-300 flex items-center" onClick={toggleMobileMenu}>
-                  <FiGithub className="mr-1" /> GitHub
-                </a>
-              </nav>
-            </div>
-          )}
-          <audio ref={audioRef} loop className="hidden">
-            <source src="/assets/audio/audio.mp3" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
-        </header>
+          </section>
+        </Suspense>
         <main className="p-4">
           <Suspense fallback={<LoadingBar isLoading={true} />}>
             <Routes>
@@ -121,7 +138,9 @@ const App: React.FC = () => {
             </Routes>
           </Suspense>
         </main>
-        <Footer />
+        <Suspense fallback={<ShimmerFooter />}>
+          <Footer />
+        </Suspense>
       </div>
     </UserProvider>
   );
