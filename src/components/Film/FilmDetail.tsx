@@ -48,61 +48,84 @@ const FilmDetail: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <img src={film.movie_banner} alt={film.title} className="w-full h-72 object-cover mb-6 rounded-lg" />
-      <h2 className="text-3xl font-bold mb-4">{film.title}</h2>
-      <p className="text-gray-700 mb-4">{film.description}</p>
-      <p className="text-gray-500 mb-2"><strong>Director:</strong> {film.director}</p>
-      <p className="text-gray-500 mb-2"><strong>Producer:</strong> {film.producer}</p>
-      <p className="text-gray-500 mb-2"><strong>Release Date:</strong> {film.release_date}</p>
-      <p className="text-gray-500 mb-6"><strong>Running Time:</strong> {film.running_time} minutes</p>
-      {userContext && userContext.user && (
-        <button
-          onClick={() => isFavorite ? userContext.removeFavorite(userContext.favorites.find(fav => fav.filmId === id)?.id || '') : userContext.addFavorite(id!)}
-          className={`p-2 ${isFavorite ? 'bg-red-500' : 'bg-green-500'} text-white rounded mb-4`}
-        >
-          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-        </button>
-      )}
-      <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-2">Characters</h3>
-        <ul className="list-disc pl-5">
-          {relatedPeople.length > 0 ? relatedPeople.map((person: any) => (
-            <li key={person.id}>
-              <Link to={`/person/${person.id}`} className="text-primary hover:underline">{person.name}</Link>
-            </li>
-          )) : <li>No characters found.</li>}
-        </ul>
+    <div className="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src={film.movie_banner} alt={film.title} className="w-full h-72 object-cover" />
+          </div>
+        </div>
+        <div className="lg:col-span-2">
+          <h2 className="text-4xl font-bold mb-4 text-blue-500">{film.title}</h2>
+          <h3 className="text-xl italic mb-4 text-gray-600">{film.original_title} ({film.original_title_romanised})</h3>
+          <p className="text-gray-700 mb-6">{film.description}</p>
+          <div className="mb-4">
+            <p className="text-gray-500"><strong>Director:</strong> {film.director}</p>
+            <p className="text-gray-500"><strong>Producer:</strong> {film.producer}</p>
+            <p className="text-gray-500"><strong>Release Date:</strong> {film.release_date}</p>
+            <p className="text-gray-500"><strong>Running Time:</strong> {film.running_time} minutes</p>
+            <p className="text-gray-500"><strong>Rotten Tomatoes Score:</strong> {film.rt_score}</p>
+          </div>
+          {userContext && userContext.user ? (
+            <button
+              onClick={() => isFavorite ? userContext.removeFavorite(userContext.favorites.find(fav => fav.filmId === id)?.id || '') : userContext.addFavorite(id!)}
+              className={`p-2 ${isFavorite ? 'bg-red-500' : 'bg-green-500'} text-white rounded mb-6 transition-colors duration-300`}
+            >
+              {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            </button>
+          ) : (
+            <div className="bg-yellow-100 text-yellow-700 p-4 rounded mb-6">
+              <p>
+                <Link to="/login" className="text-blue-500 hover:underline">Login</Link> to add this film to your favorites.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-2">Species</h3>
-        <ul className="list-disc pl-5">
-          {relatedSpecies.length > 0 ? relatedSpecies.map((specie: any) => (
-            <li key={specie.id}>
-              <Link to={`/species/${specie.id}`} className="text-primary hover:underline">{specie.name}</Link>
-            </li>
-          )) : <li>No species found.</li>}
-        </ul>
-      </div>
-      <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-2">Locations</h3>
-        <ul className="list-disc pl-5">
-          {relatedLocations.length > 0 ? relatedLocations.map((location: any) => (
-            <li key={location.id}>
-              <Link to={`/location/${location.id}`} className="text-primary hover:underline">{location.name}</Link>
-            </li>
-          )) : <li>No locations found.</li>}
-        </ul>
-      </div>
-      <div>
-        <h3 className="text-2xl font-bold mb-2">Vehicles</h3>
-        <ul className="list-disc pl-5">
-          {relatedVehicles.length > 0 ? relatedVehicles.map((vehicle: any) => (
-            <li key={vehicle.id}>
-              <Link to={`/vehicle/${vehicle.id}`} className="text-primary hover:underline">{vehicle.name}</Link>
-            </li>
-          )) : <li>No vehicles found.</li>}
-        </ul>
+      <div className="mt-6">
+        <h3 className="text-3xl font-bold text-blue-500 mb-4">Related Information</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 className="text-2xl font-semibold mb-2">Characters</h4>
+            <div className="flex flex-wrap gap-2">
+              {relatedPeople.length > 0 ? relatedPeople.map((person: any) => (
+                <Link to={`/person/${person.id}`} key={person.id} className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full hover:bg-blue-200 transition-colors duration-300">
+                  {person.name}
+                </Link>
+              )) : <span>No characters found.</span>}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-2xl font-semibold mb-2">Species</h4>
+            <div className="flex flex-wrap gap-2">
+              {relatedSpecies.length > 0 ? relatedSpecies.map((specie: any) => (
+                <Link to={`/species/${specie.id}`} key={specie.id} className="bg-green-100 text-green-600 px-3 py-1 rounded-full hover:bg-green-200 transition-colors duration-300">
+                  {specie.name}
+                </Link>
+              )) : <span>No species found.</span>}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-2xl font-semibold mb-2">Locations</h4>
+            <div className="flex flex-wrap gap-2">
+              {relatedLocations.length > 0 ? relatedLocations.map((location: any) => (
+                <Link to={`/location/${location.id}`} key={location.id} className="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full hover:bg-yellow-200 transition-colors duration-300">
+                  {location.name}
+                </Link>
+              )) : <span>No locations found.</span>}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-2xl font-semibold mb-2">Vehicles</h4>
+            <div className="flex flex-wrap gap-2">
+              {relatedVehicles.length > 0 ? relatedVehicles.map((vehicle: any) => (
+                <Link to={`/vehicle/${vehicle.id}`} key={vehicle.id} className="bg-red-100 text-red-600 px-3 py-1 rounded-full hover:bg-red-200 transition-colors duration-300">
+                  {vehicle.name}
+                </Link>
+              )) : <span>No vehicles found.</span>}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
