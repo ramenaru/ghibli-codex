@@ -11,7 +11,6 @@ const Films: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filmsPerPage] = useState(6);
   const [sortOrder, setSortOrder] = useState('default');
-  const [releaseDateOrder, setReleaseDateOrder] = useState<'asc' | 'desc'>('desc');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [filterTitle, setFilterTitle] = useState('Filter');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,18 +26,16 @@ const Films: React.FC = () => {
       let sortedFilms = [...films];
       if (sortOrder === 'mostPopular') {
         sortedFilms = sortedFilms.sort((a, b) => b.rt_score - a.rt_score);
-      } else if (sortOrder === 'releaseDate') {
-        sortedFilms = sortedFilms.sort((a, b) =>
-          releaseDateOrder === 'asc'
-            ? new Date(a.release_date).getTime() - new Date(b.release_date).getTime()
-            : new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
-        );
+      } else if (sortOrder === 'newest') {
+        sortedFilms = sortedFilms.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+      } else if (sortOrder === 'oldest') {
+        sortedFilms = sortedFilms.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime());
       } else {
         sortedFilms = films;
       }
       setFilteredFilms(sortedFilms);
     }
-  }, [sortOrder, releaseDateOrder, films]);
+  }, [sortOrder, films]);
 
   const handleSearch = (query: string) => {
     if (films) {
@@ -62,12 +59,6 @@ const Films: React.FC = () => {
   const handleSortOrder = (order: string) => {
     setSortOrder(order);
     setFilterTitle(order === 'default' ? 'Filter' : order.charAt(0).toUpperCase() + order.slice(1));
-    setIsDropdownOpen(false);
-  };
-
-  const handleReleaseDateOrder = (order: 'asc' | 'desc') => {
-    setReleaseDateOrder(order);
-    setFilterTitle(order === 'asc' ? 'Oldest' : 'Newest');
     setIsDropdownOpen(false);
   };
 
@@ -98,14 +89,13 @@ const Films: React.FC = () => {
             </svg>
           </button>
           {isDropdownOpen && (
-            <div className="origin-top-right absolute right-0 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+            <div className="origin-top-right absolute right-0 mt-4 max-w-xs rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 sm:w-56">
               <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                 <button onClick={() => handleSortOrder('default')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Default</button>
                 <button onClick={() => handleSortOrder('mostPopular')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Most Popular</button>
                 <div className="border-t border-gray-200"></div>
-                <button onClick={() => handleSortOrder('releaseDate')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Release Date</button>
-                <button onClick={() => handleReleaseDateOrder('desc')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left pl-8" role="menuitem">Newest</button>
-                <button onClick={() => handleReleaseDateOrder('asc')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left pl-8" role="menuitem">Oldest</button>
+                <button onClick={() => handleSortOrder('newest')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Newest</button>
+                <button onClick={() => handleSortOrder('oldest')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Oldest</button>
               </div>
             </div>
           )}
