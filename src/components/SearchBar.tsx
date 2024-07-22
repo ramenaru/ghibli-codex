@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useSWR from 'swr';
-import { FaSearch, FaFilm } from 'react-icons/fa';
+import { FaSearch, FaFilm, FaTimes } from 'react-icons/fa';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -45,6 +45,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     setShowSuggestions(false);
   };
 
+  const clearSearch = () => {
+    setQuery('');
+    setSuggestions([]);
+    onSearch('');
+  };
+
   return (
     <div className="relative w-full max-w-md mx-auto md:mx-0 sm:max-w-sm lg:max-w-md">
       <form onSubmit={handleSearch} className="flex items-center">
@@ -56,6 +62,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           placeholder="Search films, characters, etc..."
           aria-label="Search"
         />
+        {query && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="absolute right-10 p-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+          >
+            <FaTimes />
+          </button>
+        )}
         <button
           type="submit"
           className="absolute right-2 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200"
