@@ -3,8 +3,11 @@ import { Routes, Route, Link } from 'react-router-dom';
 import LoadingBar from './components/Loading/LoadingBar';
 import { useAuth } from './context/AuthContext';
 import { MdMusicNote, MdMusicOff } from 'react-icons/md';
+import { FiGithub } from 'react-icons/fi';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
+import NotFound from './components/NotFound';
 
 const Films = lazy(() => import('./components/Film/Films'));
 const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
@@ -32,38 +35,72 @@ const App: React.FC = () => {
     }
   }, [isMusicPlaying]);
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <UserProvider>
       <div className="min-h-screen bg-gray-100">
-        <header className="bg-blue-500 text-white text-center py-4 relative flex flex-col items-center sm:flex-row sm:justify-between sm:px-6">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-0">🍃 Studio Ghibli Codex</h1>
+        <header className="bg-blue-500 text-white shadow-lg w-full z-10">
+          <div className="container mx-auto flex justify-between items-center py-3 px-4">
+            <div className="flex items-center space-x-4">
+              <Link to="/" className="flex flex-row items-center space-x-2 text-sm">
+                <img src="/assets/images/logo/icons144x144.png" alt="logo" className="h-10 w-10" />
+                <span className="text-xl font-bold hidden sm:block md:block">Ghibli Codex</span>
+              </Link>
+              <nav className="hidden px-4 md:flex space-x-4">
+                <Link to="/" className="text-md hover:text-gray-200 transition-colors duration-300">Home</Link>
+                <Link to="/about" className="text-md hover:text-gray-200 transition-colors duration-300">About</Link>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-md hover:text-gray-200 transition-colors duration-300 flex items-center">
+                  <FiGithub className="mr-1" /> GitHub
+                </a>
+              </nav>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={toggleMusic}
+                className="p-2 bg-blue-400 text-white rounded-full hover:bg-blue-600 focus:outline-none transition-colors duration-300"
+              >
+                {isMusicPlaying ? <MdMusicNote size={20} /> : <MdMusicOff size={20} />}
+              </button>
+              {currentUser ? (
+                <>
+                  <button onClick={logout} className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300">
+                    Logout
+                  </button>
+                  <Link to="/profile" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
+                    Profile
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">Login</Link>
+                  <Link to="/signup" className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-300">Sign Up</Link>
+                </>
+              )}
+              <button onClick={toggleMobileMenu} className="md:hidden text-white focus:outline-none">
+                {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              </button>
+            </div>
+          </div>
+          {isMobileMenuOpen && (
+            <div className="md:hidden bg-blue-500">
+              <nav className="flex flex-col items-center space-y-2 py-2">
+                <Link to="/" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>Home</Link>
+                <Link to="/about" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>About</Link>
+                <a href="https://github.com/ramenaru" target="_blank" rel="noopener noreferrer" className="text-md text-white hover:text-gray-200 transition-colors duration-300 flex items-center" onClick={toggleMobileMenu}>
+                  <FiGithub className="mr-1" /> GitHub
+                </a>
+              </nav>
+            </div>
+          )}
           <audio ref={audioRef} loop className="hidden">
             <source src="/assets/audio/audio.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
-          <div className="flex items-center">
-            <button
-              onClick={toggleMusic}
-              className="p-2 bg-blue-700 text-white rounded mr-2"
-            >
-              {isMusicPlaying ? <MdMusicNote /> : <MdMusicOff />}
-            </button>
-            {currentUser ? (
-              <div className="flex gap-2">
-                <button onClick={logout} className="p-2 bg-red-500 text-white rounded">
-                  Logout
-                </button>
-                <Link to="/profile" className="p-2 bg-green-500 text-white rounded">
-                  Profile
-                </Link>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Link to="/login" className="p-2 bg-blue-700 text-white rounded">Login</Link>
-                <Link to="/signup" className="p-2 bg-green-500 text-white rounded">Sign Up</Link>
-              </div>
-            )}
-          </div>
         </header>
         <main className="p-4">
           <Suspense fallback={<LoadingBar isLoading={true} />}>
@@ -77,6 +114,9 @@ const App: React.FC = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/profile" element={<Profile />} />
+
+              {/* Not Found Route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>

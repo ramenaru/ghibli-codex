@@ -9,7 +9,7 @@ const Films: React.FC = () => {
   const { films, isLoading, isError } = useGhibliFilms();
   const [filteredFilms, setFilteredFilms] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filmsPerPage] = useState(5);
+  const [filmsPerPage] = useState(6);
   const [sortOrder, setSortOrder] = useState('default');
   const [releaseDateOrder, setReleaseDateOrder] = useState<'asc' | 'desc'>('desc');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -88,7 +88,7 @@ const Films: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-6 space-x-4">
         <SearchBar onSearch={handleSearch} />
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <button onClick={toggleDropdown} className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none" id="options-menu" aria-haspopup="true" aria-expanded={isDropdownOpen}>
@@ -98,7 +98,7 @@ const Films: React.FC = () => {
             </svg>
           </button>
           {isDropdownOpen && (
-            <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+            <div className="origin-top-right absolute right-0 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
               <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                 <button onClick={() => handleSortOrder('default')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Default</button>
                 <button onClick={() => handleSortOrder('mostPopular')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem">Most Popular</button>
@@ -111,37 +111,49 @@ const Films: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (
-          Array.from({ length: 5 }).map((_, index) => <ShimmerCard key={index} />)
+          Array.from({ length: filmsPerPage }).map((_, index) => <ShimmerCard key={index} />)
         ) : (
           currentFilms.map((film: any) => (
-            <Link to={`/film/${film.id}`} key={film.id} className="bg-white rounded-md shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300">
+            <div key={film.id} className="bg-white rounded-md shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 hover:shadow-2xl">
               <img src={film.image} alt={film.title} className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">{film.title}</h2>
-                <p className="text-gray-600 mb-4">{film.description}</p>
-                <p className="text-gray-500"><strong>Director:</strong> {film.director}</p>
-                <p className="text-gray-500"><strong>Release Date:</strong> {film.release_date}</p>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">{film.title}</h2>
+                <h3 className="text-lg text-gray-500 mb-1">{film.original_title}</h3>
+                <h4 className="text-sm text-gray-400 mb-4 italic">{film.original_title_romanised}</h4>
+                <p className="text-sm text-gray-600 mb-4 truncate">{film.description}</p>
+                <div className="flex justify-between items-center mb-4">
+                  <div>
+                    <p className="text-gray-500"><strong>Director:</strong> {film.director}</p>
+                    <p className="text-gray-500"><strong>Release Date:</strong> {film.release_date}</p>
+                  </div>
+                  <div className="bg-green-500 text-white rounded-full h-10 w-10 flex items-center justify-center">
+                    {film.rt_score}
+                  </div>
+                </div>
+                <Link to={`/film/${film.id}`} className="inline-block text-sm text-center w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
+                  View Details
+                </Link>
               </div>
-            </Link>
+            </div>
           ))
         )}
       </div>
       <div className="flex justify-center items-center mt-6 space-x-2">
-        <button onClick={prevPage} className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center">
+        <button onClick={prevPage} className="p-2 bg-blue-500 text-sm text-white rounded-md hover:bg-blue-600 flex items-center shadow-md transform hover:scale-110 transition-transform duration-300">
           <FaChevronLeft />
         </button>
         {Array.from({ length: Math.ceil(filteredFilms.length / filmsPerPage) }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
-            className={`px-3 py-2 ${currentPage === index + 1 ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded-md hover:bg-blue-600`}
+            className={`text-sm px-3 py-2 ${currentPage === index + 1 ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded-md hover:bg-blue-600 shadow-md transform hover:scale-110 transition-transform duration-300`}
           >
             {index + 1}
           </button>
         ))}
-        <button onClick={nextPage} className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center">
+        <button onClick={nextPage} className="text-sm p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center shadow-md transform hover:scale-110 transition-transform duration-300">
           <FaChevronRight />
         </button>
       </div>

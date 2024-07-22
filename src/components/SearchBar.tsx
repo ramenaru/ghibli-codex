@@ -46,13 +46,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-full max-w-sm">
       <form onSubmit={handleSearch} className="flex items-center">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="p-3 pl-10 border border-gray-300 rounded-full w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          className="p-3 pl-10 border border-gray-300 rounded-full text-sm w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
           placeholder="Search films, characters, etc..."
           aria-label="Search"
         />
