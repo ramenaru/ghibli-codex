@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGhibliPeople } from '../../hooks/useCharacters';
-import LoadingBar from '../Loading/LoadingBar';
+import ShimmerPersonDetail from '../Shimmer/ShimmerPersonDetail';
 import { FaArrowLeft } from 'react-icons/fa';
 import NotFound from '../NotFound';
 
@@ -21,7 +21,7 @@ const PersonDetail: React.FC = () => {
   const person = people?.find((p: Person) => p.id === id);
   const navigate = useNavigate();
 
-  if (isLoading) return <LoadingBar isLoading={true} />;
+  if (isLoading) return <ShimmerPersonDetail />;
   if (isError || !person) return <NotFound />;
 
   return (
@@ -32,7 +32,7 @@ const PersonDetail: React.FC = () => {
       </button>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="md:col-span-1">
-          <img src={person.image} alt={person.name} className="w-full h-64 object-cover rounded-lg shadow-lg" />
+          <img src="/assets/images/characters.jpg" alt={person.name} className="w-full h-64 object-cover rounded-lg shadow-lg" />
         </div>
         <div className="md:col-span-1">
           <h2 className="text-3xl font-bold mb-4 text-blue-500">{person.name}</h2>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useGhibliFilms } from '../../hooks/useFilmDetail';
+import { useGhibliFilms } from '../../hooks/useFilm';
 import SearchBar from '../SearchBar';
 import ShimmerCard from '../Shimmer/ShimmerCard';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaInfoCircle } from 'react-icons/fa';
 
 const Films: React.FC = () => {
   const { films, isLoading, isError } = useGhibliFilms();
@@ -88,7 +88,7 @@ const Films: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6 space-x-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
         <SearchBar onSearch={handleSearch} />
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <button onClick={toggleDropdown} className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none" id="options-menu" aria-haspopup="true" aria-expanded={isDropdownOpen}>
@@ -128,11 +128,12 @@ const Films: React.FC = () => {
                     <p className="text-gray-500"><strong>Director:</strong> {film.director}</p>
                     <p className="text-gray-500"><strong>Release Date:</strong> {film.release_date}</p>
                   </div>
-                  <div className="bg-green-500 text-white rounded-full h-10 w-10 flex items-center justify-center">
-                    {film.rt_score}
+                  <div className="bg-green-500 text-white text-sm font-semibold rounded-full h-10 w-10 flex items-center justify-center">
+                    {film.rt_score}.0
                   </div>
                 </div>
-                <Link to={`/film/${film.id}`} className="inline-block text-sm text-center w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
+                <Link to={`/film/${film.id}`} className="inline-flex items-center justify-center text-sm w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
+                  <FaInfoCircle className="mr-2" />
                   View Details
                 </Link>
               </div>

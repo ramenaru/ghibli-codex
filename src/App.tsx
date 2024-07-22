@@ -13,10 +13,8 @@ import ShimmerBanner from './components/Shimmer/ShimmerBanner';
 
 const Films = lazy(() => import('./components/Film/Films'));
 const FilmDetail = lazy(() => import('./components/Film/FilmDetail'));
-const VehicleDetail = lazy(() => import('./components/Detail/VehicleDetail'));
 const PersonDetail = lazy(() => import('./components/Detail/PersonDetail'));
 const SpeciesDetail = lazy(() => import('./components/Detail/SpeciesDetail'));
-const LocationDetail = lazy(() => import('./components/Detail/LocationDetail'));
 const Login = lazy(() => import('./components/Login'));
 const Signup = lazy(() => import('./components/Signup'));
 const Profile = lazy(() => import('./components/Profile'));
@@ -94,7 +92,7 @@ const App: React.FC = () => {
               <div className="md:hidden bg-blue-500">
                 <nav className="flex flex-col items-center space-y-2 py-2">
                   <Link to="/" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>Home</Link>
-                  <Link to="/about" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>About</Link>
+                  <Link to="https://ramenaru.me" className="text-md text-white hover:text-gray-200 transition-colors duration-300" onClick={toggleMobileMenu}>About</Link>
                   <a href="https://github.com/ramenaru" target="_blank" rel="noopener noreferrer" className="text-md text-white hover:text-gray-200 transition-colors duration-300 flex items-center" onClick={toggleMobileMenu}>
                     <FiGithub className="mr-1" /> GitHub
                   </a>
@@ -125,10 +123,8 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Films />} />
               <Route path="/film/:id" element={<FilmDetail />} />
-              <Route path="/vehicle/:id" element={<VehicleDetail />} />
               <Route path="/person/:id" element={<PersonDetail />} />
               <Route path="/species/:id" element={<SpeciesDetail />} />
-              <Route path="/location/:id" element={<LocationDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/profile" element={<Profile />} />

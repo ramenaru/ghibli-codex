@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGhibliSpecies } from '../../hooks/useSpecies';
-import LoadingBar from '../Loading/LoadingBar';
+import ShimmerSpeciesDetail from '../Shimmer/ShimmerSpeciesDetail';
 import { FaArrowLeft } from 'react-icons/fa';
 import NotFound from '../NotFound';
 
@@ -20,7 +20,7 @@ const SpeciesDetail: React.FC = () => {
   const specie = species?.find((s: Species) => s.id === id);
   const navigate = useNavigate();
 
-  if (isLoading) return <LoadingBar isLoading={true} />;
+  if (isLoading) return <ShimmerSpeciesDetail />;
   if (isError || !specie) return <NotFound />;
 
   return (
@@ -31,7 +31,7 @@ const SpeciesDetail: React.FC = () => {
       </button>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="md:col-span-1">
-        <img src="/assets/images/species.webp" alt={specie.name} className="w-full h-64 object-cover rounded-lg shadow-lg" />
+          <img src="/assets/images/species.webp" alt={specie.name} className="w-full h-64 object-cover rounded-lg shadow-lg" />
         </div>
         <div className="md:col-span-1">
           <h2 className="text-3xl font-bold mb-4 text-blue-500">{specie.name}</h2>
