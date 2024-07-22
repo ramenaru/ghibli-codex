@@ -112,7 +112,7 @@ const App: React.FC = () => {
             <img src="/assets/images/header.webp" className="w-full h-64 object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="max-w-4xl mx-auto text-center">
-                <blockquote className="text-2xl italic font-semibold text-gray-100">
+                <blockquote className="text-xl md:text-2xl italic font-semibold text-gray-100">
                   <p>“If I lose my magic, that means I've lost absolutely everything.”</p>
                 </blockquote>
                 <figcaption className="mt-4 text-gray-300">— Kiki’s Delivery Service, 1989</figcaption>

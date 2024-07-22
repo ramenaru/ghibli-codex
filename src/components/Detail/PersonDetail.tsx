@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGhibliPeople } from '../../hooks/useCharacters';
 import LoadingBar from '../Loading/LoadingBar';
 import { FaArrowLeft } from 'react-icons/fa';
+import NotFound from '../NotFound';
 
 interface Person {
   id: string;
@@ -21,7 +22,7 @@ const PersonDetail: React.FC = () => {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingBar isLoading={true} />;
-  if (isError || !person) return <div className="text-center text-red-500">Error loading person details.</div>;
+  if (isError || !person) return <NotFound />;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">

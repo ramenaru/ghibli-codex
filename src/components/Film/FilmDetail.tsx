@@ -7,6 +7,7 @@ import { useGhibliLocations } from '../../hooks/useLocation';
 import { useGhibliVehicles } from '../../hooks/useVehicle';
 import { useUser } from '../../context/UserContext';
 import ShimmerDetailCard from '../Shimmer/ShimmerDetailCard';
+import NotFound from '../NotFound';
 
 const FilmDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,9 +42,7 @@ const FilmDetail: React.FC = () => {
 
   if (isError || !film) {
     return (
-      <div className="text-center text-red-500">
-        Error loading film details. Please try again later.
-      </div>
+      <NotFound />
     );
   }
 

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGhibliLocations } from '../../hooks/useLocation';
 import LoadingBar from '../Loading/LoadingBar';
 import { FaArrowLeft } from 'react-icons/fa';
+import NotFound from '../NotFound';
 
 interface Location {
   id: string;
@@ -20,7 +21,7 @@ const LocationDetail: React.FC = () => {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingBar isLoading={true} />;
-  if (isError || !location) return <div className="text-center text-red-500">Error loading location details.</div>;
+  if (isError || !location) return <NotFound />;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">

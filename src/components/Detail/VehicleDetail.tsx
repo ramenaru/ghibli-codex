@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useGhibliVehicles } from '../../hooks/useVehicle';
 import LoadingBar from '../Loading/LoadingBar';
 import { FaArrowLeft } from 'react-icons/fa';
+import NotFound from '../NotFound';
 
 interface Vehicle {
   id: string;
@@ -21,7 +22,7 @@ const VehicleDetail: React.FC = () => {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingBar isLoading={true} />;
-  if (isError || !vehicle) return <div className="text-center text-red-500">Error loading vehicle details.</div>;
+  if (isError || !vehicle) return <NotFound />;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">

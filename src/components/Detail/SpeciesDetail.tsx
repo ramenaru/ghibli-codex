@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGhibliSpecies } from '../../hooks/useSpecies';
 import LoadingBar from '../Loading/LoadingBar';
 import { FaArrowLeft } from 'react-icons/fa';
+import NotFound from '../NotFound';
 
 interface Species {
   id: string;
@@ -20,7 +21,7 @@ const SpeciesDetail: React.FC = () => {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingBar isLoading={true} />;
-  if (isError || !specie) return <div className="text-center text-red-500">Error loading species details.</div>;
+  if (isError || !specie) return <NotFound />;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
