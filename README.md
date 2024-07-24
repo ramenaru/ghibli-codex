@@ -58,7 +58,7 @@ To start the development server, run:
 npm run dev
 yarn dev
 ```
-Open `http://localhost:5173` or any root that you find out to view it in your browser. The page will reload when you make changes.
+Open `http://localhost:5173` or any route that you find out to view it in your browser. The page will reload when you make changes.
 
 4. **Building for Production:**
 
