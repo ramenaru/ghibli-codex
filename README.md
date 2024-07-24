@@ -116,7 +116,7 @@ I really wish for anyone to help with this project, just a simple help with the 
 
 ## Security
 
-Learn more about my security report. See [SECURITY](SECURITY) for more information.
+Learn more about my security report. See [SECURITY](SECURITY.md) for more information.
 
 ## License
 
