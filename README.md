@@ -114,6 +114,10 @@ I really wish for anyone to help with this project, just a simple help with the 
 4. Push to the branch (`git push origin patch-1 | bugfix`)
 5. Open a [pull request](https://github.com/ramenaru/ghibli-codex/pulls)
 
+## Security
+
+Learn more about my security report. See [SECURITY](SECURITY) for more information.
+
 ## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
